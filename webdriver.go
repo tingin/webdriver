@@ -108,6 +108,10 @@ type WebElement struct {
 	id string
 }
 
+func (w *WebElement) element() element {
+	return element{w.id}
+}
+
 type Cookie struct {
 	Name   string
 	Value  string
@@ -339,16 +343,21 @@ func (s Session) IMEActivate(engine string) error {
 
 //Change focus to another frame on the page.
 func (s Session) FocusOnFrame(frameId interface{}) error {
+	var p = params{"id": frameId}
 	if frameId != nil {
 		switch frameId.(type) {
 		case string:
 		case int:
 		case WebElement:
+			{
+				webele := frameId.(WebElement)
+				ele := element{webele.id}
+				p = params{"id": ele}
+			}
 		default:
 			return errors.New("invalid frame, must be string|int|nil|WebElement")
 		}
 	}
-	p := params{"id": frameId}
 	_, _, err := s.wd.do(p, "POST", "/session/%s/frame", s.Id)
 	return err
 }

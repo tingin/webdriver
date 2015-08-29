@@ -185,6 +185,7 @@ func (w WebDriverCore) doInternal(params interface{}, method, url string) (strin
 			params = map[string]interface{}{}
 		}
 		jsonParams, err = json.Marshal(params)
+		debugprint(string(jsonParams))
 		if err != nil {
 			return "", nil, err
 		}
