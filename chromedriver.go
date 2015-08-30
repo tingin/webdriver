@@ -51,6 +51,17 @@ func NewChromeDriver(path string) *ChromeDriver {
 	return d
 }
 
+func NewChromeDriverRemote(url string) *ChromeDriver {
+	d := &ChromeDriver{}
+	d.url = url
+	d.Port = 9515
+	d.BaseUrl = ""
+	d.Threads = 4
+	d.LogPath = "chromedriver.log"
+	d.StartTimeout = 20 * time.Second
+	return d
+}
+
 var switchesFormat = "-port=%d -url-base=%s -log-path=%s -http-threads=%d"
 
 var cmdchan = make(chan error)
